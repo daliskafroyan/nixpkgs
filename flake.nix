@@ -61,6 +61,7 @@
           "pritunl"
           "dbeaver-community"
           "intellij-idea"
+          "postgresql" # test postgres connection
         ];
       };
     };
