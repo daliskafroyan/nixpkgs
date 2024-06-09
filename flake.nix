@@ -52,6 +52,9 @@
 
       homebrew = {
        enable = true;
+       brews = [
+          "postgresql@14" # test postgres connection
+       ];
        casks = [
           "google-chrome" 
           "visual-studio-code"
@@ -61,7 +64,6 @@
           "pritunl"
           "dbeaver-community"
           "intellij-idea"
-          "postgresql@14" # test postgres connection
         ];
       };
     };
