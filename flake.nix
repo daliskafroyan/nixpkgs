@@ -200,6 +200,7 @@
           "whatsapp"  
           "orbstack"
           "obsidian"
+          "zoom"
         ];
       };
     };
