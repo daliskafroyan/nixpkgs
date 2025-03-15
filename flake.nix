@@ -201,6 +201,8 @@
           "orbstack"
           "obsidian"
           "zoom"
+          "discord"
+          "tor-browser"
         ];
       };
     };
