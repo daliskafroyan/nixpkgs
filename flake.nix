@@ -203,6 +203,8 @@
           "zoom"
           "discord"
           "tor-browser"
+          "elmedia-player"
+          "super-productivity"
         ];
       };
     };
