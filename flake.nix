@@ -205,6 +205,7 @@
           "tor-browser"
           "elmedia-player"
           "openvpn-connect"
+          "ghostty"
         ];
       };
     };
