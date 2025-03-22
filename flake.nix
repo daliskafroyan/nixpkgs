@@ -28,6 +28,7 @@
           # pkgs.whatsapp-for-mac
           pkgs.raycast
           pkgs.telegram-desktop
+          pkgs.starship
           (pkgs.writeScriptBin "switch-cursor-theme" ''
             #!${pkgs.bash}/bin/bash
             SETTINGS_FILE="$HOME/Library/Application Support/Cursor/User/settings.json"
@@ -118,20 +119,106 @@
       # Then define home-manager configuration
       home-manager.users.yoranium = { pkgs, ... }: {
         home.stateVersion = "23.11";
-        
-        # Add Git configuration
+
         programs.git = {
           enable = true;
           userName = "Firsta Royan D.";
           userEmail = "firstaroyan09@gmail.com";
           
-          # Optional: Add additional Git configurations if needed
           extraConfig = {
             init.defaultBranch = "main";
             pull.rebase = false;
           };
         };
         
+        home.file."/Library/Application Support/com.mitchellh.ghostty/config".text = ''
+          # Font settings
+          font-family = JetBrains Mono Nerd Font
+          font-size = 14
+          font-feature = liga
+          font-feature = calt
+          
+          # Use the Nix-installed Fish shell
+          command = ${pkgs.fish}/bin/fish
+          
+          theme = catppuccin-mocha
+          background-opacity = 0.8
+          
+          # Terminal settings
+          shell-integration = fish
+          confirm-close-surface = false
+          mouse-hide-while-typing = true
+          
+          # Window settings
+          window-padding-x = 10
+          window-padding-y = 10
+          window-theme = dark
+          macos-option-as-alt = true
+        '';
+        
+        # Fish shell configuration
+        programs.fish = {
+          enable = true;
+          interactiveShellInit = ''
+            # Set fish greeting
+            set fish_greeting ""
+            
+            # Set terminal colors
+            set -g fish_color_command blue
+            set -g fish_color_param cyan
+            set -g fish_color_error red
+            
+            # Add useful aliases
+            alias ll "ls -la"
+            alias g git
+            
+            # Enable Ghostty shell integration for Fish
+            if test "$GHOSTTY_RESOURCES_DIR" != ""
+              source "$GHOSTTY_RESOURCES_DIR/shell-integration/fish/vendor_conf.d/ghostty-shell-integration.fish"
+            end
+            
+            # Initialize Starship prompt
+            starship init fish | source
+          '';
+          
+          plugins = [
+            # You can add fish plugins here if needed
+            # Example:
+            # {
+            #   name = "z";
+            #   src = pkgs.fetchFromGitHub {
+            #     owner = "jethrokuan";
+            #     repo = "z";
+            #     rev = "e0e1b9dfdba362f8ab1ae8c1afc7ccf62b89f7eb";
+            #     sha256 = "0dbnir6jbwjpjalz14snzd3cgdysgcs3raznsijd6savad3qhijc";
+            #   };
+            # }
+          ];
+        };
+
+        # Add Starship configuration
+        programs.starship = {
+          enable = true;
+          enableFishIntegration = true;
+          settings = {
+            add_newline = false;
+            character = {
+              success_symbol = "[➜](bold green)";
+              error_symbol = "[✗](bold red)";
+            };
+            # Customize modules as needed
+            directory = {
+              truncation_length = 3;
+              truncate_to_repo = true;
+            };
+            git_branch = {
+              symbol = "🌱 ";
+              truncation_length = 20;
+            };
+            # Add more module customizations as desired
+          };
+        };
+
         home.file."Library/Application Support/Cursor/User/settings.json" = {
           text = builtins.toJSON {
             "window.commandCenter" = 1;
@@ -169,7 +256,7 @@
       security.pam.services.sudo_local.touchIdAuth = true;
 
       # Enable alternative shell support in nix-darwin.
-      # programs.fish.enable = true;
+      programs.fish.enable = true;
 
       # Set Git commit hash for darwin-version.
       system.configurationRevision = self.rev or self.dirtyRev or null;
@@ -188,6 +275,12 @@
           jetbrains-mono    # JetBrains Mono Nerd Font
         ];
       };
+
+      # Set Fish as the default shell system-wide
+      # users.users.yoranium.shell = pkgs.fish;
+      
+      # Make sure Fish is registered as a valid login shell
+      # environment.shells = [ pkgs.fish ];
 
       # Enable Homebrew
       homebrew = {
@@ -208,11 +301,16 @@
           "ghostty"
         ];
       };
+
+      # Add to your system configuration section
+      environment.variables = {
+        GHOSTTY_CONFIG_HOME = "/Users/yoranium/Library/Application Support/com.mitchellh.ghostty";
+      };
     };
   in
   {
     # Build darwin flake using:
-    # $ darwin-rebuild build --flake .#yoru
+    # $ darwin-rebuild switch --flake .#yoru
     darwinConfigurations."yoru" = nix-darwin.lib.darwinSystem {
       modules = [ 
         configuration
