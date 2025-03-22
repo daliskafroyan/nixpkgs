@@ -25,71 +25,9 @@
           pkgs.vim
           pkgs.google-chrome 
           pkgs.code-cursor
-          # pkgs.whatsapp-for-mac
           pkgs.raycast
           pkgs.telegram-desktop
           pkgs.starship
-          (pkgs.writeScriptBin "switch-cursor-theme" ''
-            #!${pkgs.bash}/bin/bash
-            SETTINGS_FILE="$HOME/Library/Application Support/Cursor/User/settings.json"
-            
-            # Default to toggle if no argument provided
-            if [ -z "$1" ]; then
-              # Check current theme and toggle
-              if grep -q "Catppuccin Latte" "$SETTINGS_FILE" 2>/dev/null; then
-                THEME="Catppuccin Macchiato"
-                ICON_THEME="catppuccin-macchiato"
-                echo "Switching to dark theme"
-              else
-                THEME="Catppuccin Latte"
-                ICON_THEME="catppuccin-latte"
-                echo "Switching to light theme"
-              fi
-            else
-              # Use provided argument
-              case "$1" in
-                light|latte)
-                  THEME="Catppuccin Latte"
-                  ICON_THEME="catppuccin-latte"
-                  ;;
-                dark|macchiato)
-                  THEME="Catppuccin Macchiato"
-                  ICON_THEME="catppuccin-macchiato"
-                  ;;
-                *)
-                  echo "Unknown theme: $1"
-                  echo "Usage: switch-cursor-theme [light|dark]"
-                  exit 1
-                  ;;
-              esac
-            fi
-            
-            # Create temp file with new settings
-            TEMP_FILE=$(mktemp)
-            cat > "$TEMP_FILE" << EOF
-            {
-              "window.commandCenter": 1,
-              "editor.fontFamily": "JetBrains Mono, 'Courier New', monospace",
-              "editor.fontLigatures": true,
-              "workbench.colorTheme": "$THEME",
-              "workbench.iconTheme": "$ICON_THEME",
-              "catppuccin.accentColor": "blue",
-              "catppuccin.bracketMode": "rainbow"
-            }
-            EOF
-            
-            # Ensure directory exists
-            mkdir -p "$(dirname "$SETTINGS_FILE")"
-            
-            # Move the file with proper permissions
-            mv "$TEMP_FILE" "$SETTINGS_FILE"
-            
-            # Set proper ownership
-            chown $(whoami) "$SETTINGS_FILE"
-            chmod 644 "$SETTINGS_FILE"
-            
-            echo "$(date): Updated Cursor theme to $THEME" >> /tmp/cursor-theme-switch.log
-          '')
         ];
 
       # Add macOS system preferences to hide the dock
@@ -101,24 +39,13 @@
         mru-spaces = false;
       };
 
-      # Add launchd service for theme switching
-      launchd.agents.cursor-theme-switch = {
-        serviceConfig = {
-          ProgramArguments = [ "${pkgs.bash}/bin/bash" "-c" "switch-cursor-theme" ];
-          StartCalendarInterval = [
-            { Hour = 7;  Minute = 0; }  # Switch to light theme at 7 AM
-            { Hour = 19; Minute = 0; }  # Switch to dark theme at 7 PM
-          ];
-          StandardErrorPath = "/tmp/cursor-theme-switch.err.log";
-          StandardOutPath = "/tmp/cursor-theme-switch.out.log";
-          RunAtLoad = true;
-          UserName = "yoranium";  # Run as your user
-        };
-      };
-
       # Then define home-manager configuration
       home-manager.users.yoranium = { pkgs, ... }: {
         home.stateVersion = "23.11";
+
+        programs.vscode = {
+            enable = true;
+        };
 
         programs.git = {
           enable = true;
@@ -141,8 +68,8 @@
           # Use the Nix-installed Fish shell
           command = ${pkgs.fish}/bin/fish
           
-          theme = catppuccin-mocha
-          background-opacity = 0.8
+          theme = cobalt2
+          background-opacity = 0.9
           
           # Terminal settings
           shell-integration = fish
@@ -224,10 +151,8 @@
             "window.commandCenter" = 1;
             "editor.fontFamily" = "JetBrains Mono, 'Courier New', monospace";
             "editor.fontLigatures" = true;
-            "workbench.colorTheme" = "Catppuccin Latte";
-            "workbench.iconTheme" = "catppuccin-latte";
-            "catppuccin.accentColor" = "blue";
-            "catppuccin.bracketMode" = "rainbow";
+            "workbench.colorTheme" = "Cobalt2";
+            "workbench.iconTheme" = "ayu";
           };
         };
 
