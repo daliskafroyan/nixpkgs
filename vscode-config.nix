@@ -14,10 +14,10 @@
         sha256 = "0xvhbzxkpi0yqp8m01dgrakkz6djzzviafh33dvpz9bma85jq8ly";
       }
       {
-        name = "monica-code";
-        publisher = "monicaim";
-        version = "1.3.153";
-        sha256 = "1g0ljda8f03qsgsdzha13b1ky0p2mv7mvwg1xn8dhnb97dqpxd1a";
+        name = "go";
+        publisher = "golang";
+        version = "0.46.1";
+        sha256 = "1fx6il5mpl6z2y68s63ssy28k8hhkj998r3rpajpckqnygm85527";
       }
     ];
     userSettings = {

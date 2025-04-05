@@ -28,6 +28,7 @@
           pkgs.raycast
           pkgs.telegram-desktop
           pkgs.starship
+          pkgs.go
         ];
 
       # Add macOS system preferences to hide the dock
@@ -212,6 +213,10 @@
         GHOSTTY_CONFIG_HOME = "/Users/yoranium/Library/Application Support/com.mitchellh.ghostty";
       };
     };
+    
+    # Define pkgs for use in devShells
+    system = "aarch64-darwin";
+    pkgs = nixpkgs.legacyPackages.${system};
   in
   {
     # Build darwin flake using:
@@ -221,6 +226,14 @@
         configuration
         home-manager.darwinModules.home-manager
       ];
+    };
+
+    # Add to your outputs
+    devShells.aarch64-darwin.default = pkgs.mkShell {
+      packages = [ pkgs.fish pkgs.starship ];
+      shellHook = ''
+        exec ${pkgs.fish}/bin/fish
+      '';
     };
   };
 }
