@@ -205,6 +205,7 @@
           "elmedia-player"
           "openvpn-connect"
           "ghostty"
+          "dbeaver-community"
         ];
       };
 
