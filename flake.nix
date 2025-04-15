@@ -206,6 +206,8 @@
           "openvpn-connect"
           "ghostty"
           "dbeaver-community"
+          "transmission"
+          "postman"
         ];
       };
 
