@@ -208,6 +208,7 @@
           "dbeaver-community"
           "transmission"
           "postman"
+          "anki"
         ];
       };
 
