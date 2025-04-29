@@ -31,13 +31,18 @@
           pkgs.go
         ];
 
-      # Add macOS system preferences to hide the dock
-      system.defaults.dock = {
-        autohide = true;
-        autohide-delay = 0.0;
-        autohide-time-modifier = 0.0;
-        showhidden = true;
-        mru-spaces = false;
+      system.defauls = {
+        trackpad = {
+          Clicking = true;
+        };
+
+        dock = {
+          autohide = true;
+          autohide-delay = 0.0;
+          autohide-time-modifier = 0.0;
+          showhidden = true;
+          mru-spaces = false;
+        };
       };
 
       # Then define home-manager configuration
@@ -209,6 +214,7 @@
           "transmission"
           "postman"
           "anki"
+          "cloudflare-warp"
         ];
       };
 
