@@ -29,9 +29,10 @@
           pkgs.telegram-desktop
           pkgs.starship
           pkgs.go
+          pkgs.devenv
         ];
 
-      system.defauls = {
+      system.defaults = {
         trackpad = {
           Clicking = true;
         };
