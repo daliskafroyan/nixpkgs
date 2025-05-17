@@ -201,6 +201,9 @@
           autoUpdate = true;
           cleanup = "zap";
         };
+        # brews = [
+        #   "ngrok"
+        # ];
         casks = [
           "whatsapp"  
           "orbstack"
@@ -216,6 +219,7 @@
           "postman"
           "anki"
           "cloudflare-warp"
+          "ngrok"
         ];
       };
 
