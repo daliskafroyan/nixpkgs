@@ -201,9 +201,8 @@
           autoUpdate = true;
           cleanup = "zap";
         };
-        # brews = [
-        #   "ngrok"
-        # ];
+        brews = [
+        ];
         casks = [
           "whatsapp"  
           "orbstack"
@@ -220,12 +219,14 @@
           "anki"
           "cloudflare-warp"
           "ngrok"
+          "cap"
         ];
       };
 
       # Add to your system configuration section
       environment.variables = {
         GHOSTTY_CONFIG_HOME = "/Users/yoranium/Library/Application Support/com.mitchellh.ghostty";
+        PATH = "/opt/homebrew/bin:$PATH";
       };
     };
     
